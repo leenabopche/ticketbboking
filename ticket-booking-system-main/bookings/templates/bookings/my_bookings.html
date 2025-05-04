@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">My Bookings</h2>
+
+{% if bookings %}
+<div class="list-group">
+    {% for booking in bookings %}
+    <div class="list-group-item mb-3">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h5>{{ booking.event.title }}</h5>
+                <p class="mb-1">
+                    <i class="fas fa-calendar-day"></i> 
+                    {{ booking.event.date|date:"M d, Y H:i" }}
+                </p>
+                <p class="mb-1">
+                    <i class="fas fa-map-marker-alt"></i> {{ booking.event.venue }}
+                </p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-primary rounded-pill fs-6">
+                    {{ booking.num_seats }} seat(s)
+                </span>
+                <p class="text-muted mt-2">
+                    Booked on {{ booking.booked_at|date:"M d, Y" }}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    You haven't made any bookings yet.
+</div>
+{% endif %}
+{% endblock %}

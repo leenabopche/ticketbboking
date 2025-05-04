@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4>My Profile</h4>
+                    <hr>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4>My Bookings</h4>
+                    <hr>
+                    {% if bookings %}
+                    <div class="list-group">
+                        {% for booking in bookings %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6>{{ booking.event.title }}</h6>
+                                    <small class="text-muted">
+                                        {{ booking.event.date|date:"M d, Y H:i" }} at {{ booking.event.venue }}
+                                    </small>
+                                </div>
+                                <span class="badge bg-primary rounded-pill">
+                                    {{ booking.num_seats }} seat(s)
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info mt-3">
+                        You have no bookings yet.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

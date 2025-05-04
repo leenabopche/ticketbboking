@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            {% if event.image_url %}
+            <img src="{{ event.image_url }}" class="card-img-top" style="max-height: 400px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h2>{{ event.title }}</h2>
+                <p class="text-muted">
+                    <i class="fas fa-calendar-day"></i> {{ event.date|date:"M d, Y H:i" }}
+                </p>
+                <p class="text-muted">
+                    <i class="fas fa-map-marker-alt"></i> {{ event.venue }}
+                </p>
+                <p>{{ event.description }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Book Tickets</h5>
+                <p class="text-success">
+                    <i class="fas fa-chair"></i> {{ event.available_seats }} seats available
+                </p>
+                
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'book_event' event.pk %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Number of Seats</label>
+                        <input type="number" name="seats" class="form-control" 
+                               min="1" max="{{ event.available_seats }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-ticket-alt"></i> Confirm Booking
+                    </button>
+                </form>
+                {% else %}
+                <div class="alert alert-info">
+                    Please <a href="{% url 'login' %}">login</a> to book tickets
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
